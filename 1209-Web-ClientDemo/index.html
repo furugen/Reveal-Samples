@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" charset="utf-8">
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="./Reveal/infragistics.reveal.js"></script>
+</head>
+
+<body>
+    <div id="revealView" style="height:600px;" />
+
+    <script type="text/javascript">
+        var dashboardId = "dashboardId";
+        var revealSettings = new $.ig.RevealSettings(null);
+        new $.ig.RevealView("#revealView", revealSettings);
+    </script>
+</body>
+</html>

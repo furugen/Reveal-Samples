@@ -1,0 +1,47 @@
+﻿<Window x:Class="DesktopDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopDemo"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:sdk="clr-namespace:Infragistics.Sdk;assembly=RVUI.WPF"
+
+        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False">
+            <i:Interaction.Behaviors>
+                <local:ShowRevealBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="データ登録日" Binding="{Binding EntryDate, StringFormat=yyyy/MM/dd}" />
+                <DataGridTextColumn Header="商品名" Binding="{Binding Productname}" />
+                <DataGridTextColumn Header="商品単価" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="新規/リピート" Binding="{Binding NewOrRenew}" />
+                <DataGridTextColumn Header="顧客業界種別" Binding="{Binding CustomerKind}" />
+                <DataGridTextColumn Header="顧客名" Binding="{Binding CustomerName}" />
+                <DataGridTextColumn Header="都道府県" Binding="{Binding Adress}" />
+                <DataGridTextColumn Header="売上個数" Binding="{Binding NumberOfSeles}" />
+                <DataGridTextColumn Header="売上金額" Binding="{Binding Proceeds}" />
+                <DataGridTextColumn Header="売上日" Binding="{Binding SaleDate, StringFormat=yyyy/MM/dd}" />
+                <DataGridTextColumn Header="購入経路" Binding="{Binding ViaBuyMethod}" />
+                <DataGridTextColumn Header="ステータス" Binding="{Binding Status}" />
+                <DataGridTextColumn Header="営業担当" Binding="{Binding Seler}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid Grid.Column="1" x:Name="dataGrid2">
+            <i:Interaction.Behaviors>
+                <local:ShowRevealBehavior />
+            </i:Interaction.Behaviors>
+        </DataGrid>
+        
+    </Grid>
+</Window>
