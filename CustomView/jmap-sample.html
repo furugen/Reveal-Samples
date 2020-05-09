@@ -7,9 +7,11 @@
       <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
       <scripttype="text/javascript" src="html2canvas.min.js?version=08a7bc6"></script>
       <script type="text/javascript">
+
          window.RPBridgeListener = {
             dataReady: function (tabularData) {
                 $("#map-container").japanMap({
+                    width: "100%",
                     showsPrefectureName: true,
                     backgroundColor : "#f2fcff",
                     borderLineColor: "#f2fcff",
@@ -21,11 +23,7 @@
                     prefectureNameType: "short",
                     fontSize : 12,
                     fontColor : "areaColor",
-                    fontShadowColor : "black",
-                    onSelect : function(data){
-                        console.log(data.name);
-                        alert(data.name);
-                    }
+                    fontShadowColor : "black"
                 });
                RPBridgeListener.generateImage();
             },
@@ -40,6 +38,10 @@
          };
          $(function () {
             RPBridgeUtils.notifyExtensionIsReady();
+
+            $("#map-container").resize(function() {
+               console.log("resize");
+            });
          });
       </script>
    </head>

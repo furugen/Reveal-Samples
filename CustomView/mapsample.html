@@ -26,9 +26,49 @@
                 }
             });
         });
+
+
     </script>
 </head>
 <body>
 <div id="map-container"></div>
+<script>
+    const target = document.getElementById("map-container");
+    var timeoutID;
+    const resizeObserver = new ResizeObserver(entries => {
+
+        console.log("resize");
+        for (const entry of entries) {
+            var rq = function() {
+                console.log("width:" + entry.contentRect.width + "/ height:" + entry.contentRect.height);
+
+   
+                $("#map-container").empty();
+                $("#map-container").japanMap({
+                    width: entry.contentRect.width,
+                    showsPrefectureName: true,
+                    backgroundColor : "#f2fcff",
+                    borderLineColor: "#f2fcff",
+                    borderLineWidth : 0.25,
+                    lineColor : "#a0a0a0",
+                    lineWidth: 1,
+                    drawsBoxLine: true,
+                    showsPrefectureName: true,
+                    prefectureNameType: "short",
+                    fontSize : 12,
+                    fontColor : "areaColor",
+                    fontShadowColor : "black",
+                    onSelect : function(data){
+                        console.log(data.name);
+                        alert(data.name);
+                    }
+                });
+            }
+            clearTimeout(timeoutID);
+            timeoutID = setTimeout(rq, 1000);
+        }
+    });
+    resizeObserver.observe(target);
+</script>
 </body>
 </html>
