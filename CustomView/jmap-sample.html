@@ -1,0 +1,49 @@
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <script src="./js/jquery.min.js"></script>
+      <script src="./js/jquery.japan-map.min.js"></script>
+      <script type="text/javascript" src="rplus_bridge_utils.js?version=08a7bc6"></script>
+      <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+      <scripttype="text/javascript" src="html2canvas.min.js?version=08a7bc6"></script>
+      <script type="text/javascript">
+         window.RPBridgeListener = {
+            dataReady: function (tabularData) {
+                $("#map-container").japanMap({
+                    showsPrefectureName: true,
+                    backgroundColor : "#f2fcff",
+                    borderLineColor: "#f2fcff",
+                    borderLineWidth : 0.25,
+                    lineColor : "#a0a0a0",
+                    lineWidth: 1,
+                    drawsBoxLine: true,
+                    showsPrefectureName: true,
+                    prefectureNameType: "short",
+                    fontSize : 12,
+                    fontColor : "areaColor",
+                    fontShadowColor : "black",
+                    onSelect : function(data){
+                        console.log(data.name);
+                        alert(data.name);
+                    }
+                });
+               RPBridgeListener.generateImage();
+            },
+            generateImage: function () {
+               html2canvas(document.body, {
+                  onrendered: function (canvas) {
+                      var imageUrl = canvas.toDataURL('image/png', 1.0);
+                      RPBridgeUtils.sendImage(imageUrl);
+                  }
+              });
+            }
+         };
+         $(function () {
+            RPBridgeUtils.notifyExtensionIsReady();
+         });
+      </script>
+   </head>
+   <body>
+    <div id="map-container"></div>
+   </body>
+</html>

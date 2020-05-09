@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>Japan Map - EXAMPLE 1</title>
+    <meta charset="UTF-8">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.japan-map.min.js"></script>
+    <script>
+        $(function(){
+            $("#map-container").japanMap({
+                showsPrefectureName: true,
+                backgroundColor : "#f2fcff",
+                borderLineColor: "#f2fcff",
+                borderLineWidth : 0.25,
+                lineColor : "#a0a0a0",
+                lineWidth: 1,
+                drawsBoxLine: true,
+                showsPrefectureName: true,
+                prefectureNameType: "short",
+                fontSize : 12,
+                fontColor : "areaColor",
+                fontShadowColor : "black",
+                onSelect : function(data){
+                    console.log(data.name);
+                    alert(data.name);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="map-container"></div>
+</body>
+</html>
