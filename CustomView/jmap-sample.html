@@ -63,13 +63,73 @@
       ];
 
       var rdata;
+
+      function getRevealData(){
+         if(rdata !== null){
+            var addressColumn;
+            var dataColumn;
+            var addressColumnNo;
+            var dataColumnNo;
+            for(var i=0; i < rdata.metadata.columns.length; i++){
+               var column = rdata.metadata.columns[i];
+               // ラベルで選択されたフィールドを取得
+               if(column.type === 3){
+                  addressColumn = column;
+                  addressColumnNo = i;
+               }
+               else if(column.type === 1){
+                  dataColumn = column;
+                  dataColumnNo = i;
+               }
+            }
+
+            // データ取得
+            var returnValue = [];
+            for (var i = 0; i < rdata.data.length; i++) {
+               var rowData = rdata.data[i];
+
+               // 対象の都道府県
+               var addressValue = rowData[addressColumnNo];
+               // 対象の表示値
+               var cellValue = rowData[dataColumnNo];
+               
+
+               returnValue.push(
+                  { address: addressValue, value: cellValue }
+               )
+            }
+
+
+            return returnValue;
+         }
+         return null;
+      }
+
       function getAreaData(){
          var areasData = [];
          var codeNumber = 1;
 
+         var revealData = getRevealData();
+
+         // 都道府県名でマッチング
          baseAreas.forEach(d => {
+
+               //todo
+               var displayValue = d.fullName;
+               var displayColor = d.regionColor;
+
+               if(revealData !== null){
+                  var filterValue = d.fullName;
+                  var rdataFilterd = revealData.filter(fdata => {
+                     if(filterValue === fdata.address){
+                        return true;
+                     }
+                  });
+                  displayValue = rdataFilterd[0].value;
+               }
+
                areasData.push(
-                  {code : codeNumber, name: d.hiragana, color: d.regionColor, prefectures: d.prefectures}
+                  {code : codeNumber, name: displayValue, color: d.regionColor, prefectures: d.prefectures}
                );
                codeNumber = codeNumber + 1;
          });
@@ -108,8 +168,6 @@
          };
          $(function () {
             RPBridgeUtils.notifyExtensionIsReady();
-
-
          });
 
          const target = document.getElementById("map-container");
