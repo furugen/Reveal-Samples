@@ -5,34 +5,87 @@
     <meta charset="UTF-8">
     <script src="./js/jquery.min.js"></script>
     <script src="./js/jquery.japan-map.min.js"></script>
-    <script>
-        $(function(){
-            $("#map-container").japanMap({
-                showsPrefectureName: true,
-                backgroundColor : "#f2fcff",
-                borderLineColor: "#f2fcff",
-                borderLineWidth : 0.25,
-                lineColor : "#a0a0a0",
-                lineWidth: 1,
-                drawsBoxLine: true,
-                showsPrefectureName: true,
-                prefectureNameType: "short",
-                fontSize : 12,
-                fontColor : "areaColor",
-                fontShadowColor : "black",
-                onSelect : function(data){
-                    console.log(data.name);
-                    alert(data.name);
-                }
-            });
-        });
-
-
-    </script>
 </head>
 <body>
 <div id="map-container"></div>
 <script>
+
+    var baseAreas = [
+        { shortName: "北海道", fullName: "北海道", hiragana: "ほっかいどう", romaji: "hokkaido", prefectures: [1], region: "北海道地方", regionPrfectures: [1], "regionColor":"#ca93ea", "regionHoverColor":"#e0b1fb"},
+        { shortName: "青森", fullName: "青森県", hiragana: "あおもり", romaji: "aomori", prefectures: [2], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "岩手", fullName: "岩手県", hiragana: "いわて", romaji: "iwate", prefectures: [3], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "宮城", fullName: "宮城県", hiragana: "みやぎ", romaji: "miyagi", prefectures: [4], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "秋田", fullName: "秋田県", hiragana: "あきた", romaji: "akita", prefectures: [5], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "山形", fullName: "山形県", hiragana: "やまがた", romaji: "yamagata", prefectures: [6], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "福島", fullName: "福島県", hiragana: "ふくしま", romaji: "fukushima", prefectures: [7], region: "東北地方", regionPrfectures: [2,3,4,5,6,7], "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd"},
+        { shortName: "茨城", fullName: "茨城県", hiragana: "いばらき", romaji: "ibaraki", prefectures: [8], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "栃木", fullName: "栃木県", hiragana: "とちぎ", romaji: "tochigi", prefectures: [9], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "群馬", fullName: "群馬県", hiragana: "ぐんま", romaji: "gunma", prefectures: [10], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "埼玉", fullName: "埼玉県", hiragana: "さいたま", romaji: "saitama", prefectures: [11], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "千葉", fullName: "千葉県", hiragana: "ちば", romaji: "chiba", prefectures: [12], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "東京", fullName: "東京都", hiragana: "とうきょう", romaji: "tokyo", prefectures: [13], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "神奈川", fullName: "神奈川県", hiragana: "かながわ", romaji: "kanagawa", prefectures: [14], region: "関東地方", regionPrfectures: [8,9,10,11,12,13,14], "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd"},
+        { shortName: "新潟", fullName: "新潟県", hiragana: "にいがた", romaji: "niigata", prefectures: [15], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "富山", fullName: "富山県", hiragana: "とやま", romaji: "toyama", prefectures: [16], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "石川", fullName: "石川県", hiragana: "いしかわ", romaji: "ishikawa", prefectures: [17], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "福井", fullName: "福井県", hiragana: "ふくい", romaji: "fukui", prefectures: [18], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "山梨", fullName: "山梨県", hiragana: "やまなし", romaji: "yamanashi", prefectures: [19], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "長野", fullName: "長野県", hiragana: "ながの", romaji: "nagano", prefectures: [20], region: "北陸・甲信越地方", regionPrfectures: [15,16,17,18,19,20], "regionColor":"#52d49c", "regionHoverColor":"#93ecc5"},
+        { shortName: "岐阜", fullName: "岐阜県", hiragana: "ぎふ", romaji: "gifu", prefectures: [21], region: "東海地方", regionPrfectures: [21,22,23,24], "regionColor":"#77e18e", "regionHoverColor":"#aff9bf"},
+        { shortName: "静岡", fullName: "静岡県", hiragana: "しずおか", romaji: "shizuoka", prefectures: [22], region: "東海地方", regionPrfectures: [21,22,23,24], "regionColor":"#77e18e", "regionHoverColor":"#aff9bf"},
+        { shortName: "愛知", fullName: "愛知県", hiragana: "あいち", romaji: "aichi", prefectures: [23], region: "東海地方", regionPrfectures: [21,22,23,24], "regionColor":"#77e18e", "regionHoverColor":"#aff9bf"},
+        { shortName: "三重", fullName: "三重県", hiragana: "みえ", romaji: "mie", prefectures: [24], region: "東海地方", regionPrfectures: [21,22,23,24], "regionColor":"#77e18e", "regionHoverColor":"#aff9bf"},
+        { shortName: "滋賀", fullName: "滋賀県", hiragana: "しが", romaji: "shiga", prefectures: [25], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "京都", fullName: "京都府", hiragana: "きょうと", romaji: "kyoto", prefectures: [26], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "大阪", fullName: "大阪府", hiragana: "おおさか", romaji: "osaka", prefectures: [27], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "兵庫", fullName: "兵庫県", hiragana: "ひょうご", romaji: "hyogo", prefectures: [28], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "奈良", fullName: "奈良県", hiragana: "なら", romaji: "nara", prefectures: [29], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "和歌山", fullName: "和歌山県", hiragana: "わやかま", romaji: "wakayama", prefectures: [30], region: "東海地方", regionPrfectures: [25,26,27,28,29,30], "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac"},
+        { shortName: "鳥取", fullName: "鳥取県", hiragana: "とっとり", romaji: "tottori", prefectures: [31], region: "中国地方", regionPrfectures: [31,32,33,34,35], "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0"},
+        { shortName: "島根", fullName: "島根県", hiragana: "しまね", romaji: "shimane", prefectures: [32], region: "中国地方", regionPrfectures: [31,32,33,34,35], "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0"},
+        { shortName: "岡山", fullName: "岡山県", hiragana: "おかやま", romaji: "okayama", prefectures: [33], region: "中国地方", regionPrfectures: [31,32,33,34,35], "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0"},
+        { shortName: "広島", fullName: "広島県", hiragana: "ひろしま", romaji: "hiroshima", prefectures: [34], region: "中国地方", regionPrfectures: [31,32,33,34,35], "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0"},
+        { shortName: "山口", fullName: "山口県", hiragana: "やまぐち", romaji: "yamaguchi", prefectures: [35], region: "中国地方", regionPrfectures: [31,32,33,34,35], "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0"},
+        { shortName: "徳島", fullName: "徳島県", hiragana: "とくしま", romaji: "tokushima", prefectures: [36], region: "四国地方", regionPrfectures: [36,37,38,39], "regionColor":"#fbad8b", "regionHoverColor":"#ffd7c5"},
+        { shortName: "香川", fullName: "香川県", hiragana: "かがわ", romaji: "kagawa", prefectures: [37], region: "四国地方", regionPrfectures: [36,37,38,39], "regionColor":"#fbad8b", "regionHoverColor":"#ffd7c5"},
+        { shortName: "愛媛", fullName: "愛媛県", hiragana: "えひめ", romaji: "ehime", prefectures: [38], region: "四国地方", regionPrfectures: [36,37,38,39], "regionColor":"#fbad8b", "regionHoverColor":"#ffd7c5"},
+        { shortName: "高知", fullName: "高知県", hiragana: "こうち", romaji: "kochi", prefectures: [39], region: "四国地方", regionPrfectures: [36,37,38,39], "regionColor":"#fbad8b", "regionHoverColor":"#ffd7c5"},
+        { shortName: "福岡", fullName: "福岡県", hiragana: "ふくおか", romaji: "fukuoka", prefectures: [40], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "佐賀", fullName: "佐賀県", hiragana: "さが", romaji: "saga", prefectures: [41], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "長崎", fullName: "長崎県", hiragana: "ながさき", romaji: "nagasaki", prefectures: [42], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "熊本", fullName: "熊本県", hiragana: "くまもと", romaji: "kumamoto", prefectures: [43], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "大分", fullName: "大分県", hiragana: "おおいた", romaji: "oita", prefectures: [44], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "宮崎", fullName: "宮崎県", hiragana: "みやざき", romaji: "miyazaki", prefectures: [45], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "鹿児島", fullName: "鹿児島県", hiragana: "かごしま", romaji: "kagoshima", prefectures: [46], region: "九州地方", regionPrfectures: [40,41,42,43,44,45,46], "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece"},
+        { shortName: "沖縄", fullName: "沖縄県", hiragana: "おきなわ", romaji: "okinawa", prefectures: [47], region: "沖縄地方", regionPrfectures: [47], "regionColor":"#ea89c4", "regionHoverColor":"#fdcae9"},
+    ];
+
+    var areas = [
+        {"code": 1 , "name":"北海道地方", "regionColor":"#ca93ea", "regionHoverColor":"#e0b1fb", "prefectures":[1]},
+        {"code": 2 , "name":"東北地方", "regionColor":"#a7a5ea", "regionHoverColor":"#d6d4fd", "prefectures":[2,3,4,5,6,7]},
+        {"code": 3 , "name":"関東地方", "regionColor":"#84b0f6", "regionHoverColor":"#c1d8fd", "prefectures":[8,9,10,11,12,13,14]},
+        {"code": 4 , "name":"北陸・甲信越地方", "regionColor":"#52d49c", "regionHoverColor":"#93ecc5", "prefectures":[15,16,17,18,19,20]},
+        {"code": 4 , "name":"東海地方", "regionColor":"#77e18e", "regionHoverColor":"#aff9bf", "prefectures":[21,22,23,24]},
+        {"code": 6 , "name":"近畿地方", "regionColor":"#f2db7b", "regionHoverColor":"#f6e8ac", "prefectures":[25,26,27,28,29,30]},
+        {"code": 7 , "name":"中国地方", "regionColor":"#f9ca6c", "regionHoverColor":"#ffe5b0", "prefectures":[31,32,33,34,35]},
+        {"code": 8 , "name":"四国地方", "regionColor":"#fbad8b", "regionHoverColor":"#ffd7c5", "prefectures":[36,37,38,39]},
+        {"code": 9 , "name":"九州地方", "regionColor":"#f7a6a6", "regionHoverColor":"#ffcece", "prefectures":[40,41,42,43,44,45,46]},
+        {"code":10 , "name":"沖縄地方",  "regionColor":"#ea89c4", "regionHoverColor":"#fdcae9", "prefectures":[47]}
+    ];
+    function getAreaData(){
+        var areasData = [];
+        var codeNumber = 1;
+
+        baseAreas.forEach(d => {
+            areasData.push(
+                {code : codeNumber, name: d.hiragana, color: d.regionColor, prefectures: d.prefectures}
+            );
+            codeNumber = codeNumber + 1;
+        });
+
+        return areasData;
+    }
+
     const target = document.getElementById("map-container");
     var timeoutID;
     const resizeObserver = new ResizeObserver(entries => {
@@ -40,28 +93,19 @@
         console.log("resize");
         for (const entry of entries) {
             var rq = function() {
-                console.log("width:" + entry.contentRect.width + "/ height:" + entry.contentRect.height);
-
-   
                 $("#map-container").empty();
                 $("#map-container").japanMap({
                     width: entry.contentRect.width,
-                    showsPrefectureName: true,
-                    backgroundColor : "#f2fcff",
-                    borderLineColor: "#f2fcff",
-                    borderLineWidth : 0.25,
-                    lineColor : "#a0a0a0",
-                    lineWidth: 1,
-                    drawsBoxLine: true,
-                    showsPrefectureName: true,
-                    prefectureNameType: "short",
+
+                    areas  : getAreaData(),
+                    selection : "prefecture",
+                    borderLineWidth: 0.25,
+                    drawsBoxLine : false,
+                    showsAreaName : true,
+                    font : "MS Mincho",
                     fontSize : 12,
                     fontColor : "areaColor",
                     fontShadowColor : "black",
-                    onSelect : function(data){
-                        console.log(data.name);
-                        alert(data.name);
-                    }
                 });
             }
             clearTimeout(timeoutID);
