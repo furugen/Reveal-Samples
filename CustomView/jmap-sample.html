@@ -6,7 +6,11 @@
       <script type="text/javascript" src="rplus_bridge_utils.js?version=08a7bc6"></script>
       <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
       <scripttype="text/javascript" src="html2canvas.min.js?version=08a7bc6"></script>
-      <script type="text/javascript">
+
+   </head>
+   <body>
+    <div id="map-container"></div>
+    <script type="text/javascript">
 
       var baseAreas = [
          { shortName: "北海道", fullName: "北海道", hiragana: "ほっかいどう", romaji: "hokkaido", prefectures: [1], region: "北海道地方", regionPrfectures: [1], "regionColor":"#ca93ea", "regionHoverColor":"#e0b1fb"},
@@ -133,9 +137,6 @@
             }
          });
          resizeObserver.observe(target);
-      </script>
-   </head>
-   <body>
-    <div id="map-container"></div>
+   </script>
    </body>
 </html>
