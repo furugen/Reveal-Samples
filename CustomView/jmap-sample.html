@@ -112,27 +112,42 @@
          var revealData = getRevealData();
 
          // 都道府県名でマッチング
-         baseAreas.forEach(d => {
+         if(revealData !== null){
 
-               //todo
-               var displayValue = d.fullName;
-               var displayColor = d.regionColor;
+            var captraMax = 1;
+            var captraMin = 0.1;
+            var captraBet = captraMax - captraMin;
+            var captraEach = captraBet / revealData.length;
+            var currentCaptra = captraMax;
 
-               if(revealData !== null){
-                  var filterValue = d.fullName;
-                  var rdataFilterd = revealData.filter(fdata => {
-                     if(filterValue === fdata.address){
-                        return true;
-                     }
-                  });
-                  displayValue = rdataFilterd[0].value;
-               }
+            revealData.sort(function(a,b) {
+               if(a.value > b.value) return -1;
+               if(a.value < b.value) return 1;
+               return 0;
+            });
+
+            revealData.forEach(rv => {
+
+               var colorStr = "rgba(255,217,66, " + currentCaptra + ")";
+               currentCaptra = currentCaptra - captraEach;
+
+               var ba = baseAreas.filter(bf => {
+                  if(rv.address === bf.fullName){
+                     return true;
+                  }
+               });
+               var d = ba[0];
+               var displayValue = rv.value;
+               var displayColor = colorStr;
 
                areasData.push(
-                  {code : codeNumber, name: displayValue, color: d.regionColor, prefectures: d.prefectures}
+                  {code : codeNumber, name: displayValue, color: displayColor, prefectures: d.prefectures}
                );
                codeNumber = codeNumber + 1;
-         });
+
+            });
+
+         }
 
          return areasData;
       }

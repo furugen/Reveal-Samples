@@ -76,9 +76,21 @@
         var areasData = [];
         var codeNumber = 1;
 
+
+        
+        var captraMax = 1;
+        var captraMin = 0.1;
+        var captraBet = captraMax - captraMin;
+        var captraEach = captraBet / baseAreas.length;
+
+        var currentCaptra = captraMax;
         baseAreas.forEach(d => {
+            
+            var colorStr = "rgba(255,217,66, " + currentCaptra + ")";
+            currentCaptra = currentCaptra - captraEach;
+
             areasData.push(
-                {code : codeNumber, name: d.hiragana, color: d.regionColor, prefectures: d.prefectures}
+                {code : codeNumber, name: d.hiragana, color: colorStr, prefectures: d.prefectures}
             );
             codeNumber = codeNumber + 1;
         });
