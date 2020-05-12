@@ -29,10 +29,10 @@
          </style>
          
          <div class="page-container">
-             <input type="checkbox" id="chkShowNumber" class="page-button-area" checked="checked"><label for="chkShowNumber">数値を表示</label>
-             <input type="checkbox" id="chkShowAddress" class="page-button-area" ><label for="chkShowAddress">都道府県名を表示</label>
-             <div id="map-container" ></div>
-         </div>
+            <input type="checkbox" id="chkShowNumber" class="page-button-area" checked="checked" ><label for="chkShowNumber" style="font-size: small;">数値を表示</label>
+            <input type="checkbox" id="chkShowAddress" class="page-button-area" ><label for="chkShowAddress" style="font-size: small;">都道府県名を表示</label>
+            <div id="map-container" ></div>
+        </div>
 
     <script type="text/javascript">
 
@@ -179,6 +179,16 @@
                var displayValue = rv.value;
                var displayColor = colorStr;
 
+               if ($("#chkShowNumber").prop('checked') && $("#chkShowAddress").prop('checked')) {
+                  displayValue = bf.fullName + "(" +  rv.value + ")";
+               }
+               else if ($("#chkShowNumber").prop('checked')) {
+                  displayValue = rv.value;
+               }
+               else if ($("#chkShowAddress").prop('checked')) {
+                  displayValue = bf.fullName;
+               }
+
                areasData.push(
                   {code : codeNumber, name: displayValue, color: displayColor, prefectures: d.prefectures}
                );
@@ -232,6 +242,9 @@
             $("#chkShowAddress").button();
             
             $("#chkShowNumber").change(function(){
+                  refreshReveal();
+            });
+            $("#chkShowAddress").change(function(){
                   refreshReveal();
             });
          });
