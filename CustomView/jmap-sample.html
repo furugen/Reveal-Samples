@@ -180,13 +180,13 @@
                var displayColor = colorStr;
 
                if ($("#chkShowNumber").prop('checked') && $("#chkShowAddress").prop('checked')) {
-                  displayValue = bf.fullName + "(" +  rv.value + ")";
+                  displayValue = d.fullName + "(" +  rv.value + ")";
                }
                else if ($("#chkShowNumber").prop('checked')) {
                   displayValue = rv.value;
                }
                else if ($("#chkShowAddress").prop('checked')) {
-                  displayValue = bf.fullName;
+                  displayValue = d.fullName;
                }
 
                areasData.push(
