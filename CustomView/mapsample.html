@@ -3,12 +3,40 @@
 <head>
     <title>Japan Map - EXAMPLE 1</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script src="./js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="./js/jquery.japan-map.min.js"></script>
 </head>
 <body>
-<div id="map-container"></div>
+
+
+<style>
+.page-container {
+    position: relative;
+}
+.page-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.page-button-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>
+
+<div class="page-container">
+    <input type="checkbox" id="chkShowNumber" class="page-button-area" checked="checked"><label for="chkShowNumber">数値を表示</label>
+    <input type="checkbox" id="chkShowAddress" class="page-button-area" ><label for="chkShowAddress">都道府県名を表示</label>
+    <div id="map-container" ></div>
+</div>
+
 <script>
+    var revealHeight;
+    var revealWidth;
 
     var baseAreas = [
         { shortName: "北海道", fullName: "北海道", hiragana: "ほっかいどう", romaji: "hokkaido", prefectures: [1], region: "北海道地方", regionPrfectures: [1], "regionColor":"#ca93ea", "regionHoverColor":"#e0b1fb"},
@@ -88,10 +116,10 @@
             
             
             var colorStr = "rgba(255,217,66, " + currentCaptra + ")";
-            // 赤(3) > 橙(8) >きいろ(15) > はだいろ(25) >  白(47)
-            if(codeNumber <= 3) {
+            // 赤(1) > 橙(5) >きいろ(15) > はだいろ(25) >  白(47)
+            if(codeNumber <= 1) {
                 colorStr = "#ff4500";
-            }else if(codeNumber <= 8){
+            }else if(codeNumber <= 5){
                 colorStr = "#ff8c00";
             }else if(codeNumber <= 15){
                 colorStr = "#ffff00";
@@ -115,29 +143,52 @@
     const target = document.getElementById("map-container");
     var timeoutID;
     const resizeObserver = new ResizeObserver(entries => {
-
         console.log("resize");
         for (const entry of entries) {
             var rq = function() {
-                $("#map-container").empty();
-                $("#map-container").japanMap({
-                    width: entry.contentRect.width,
-                    areas  : getAreaData(),
-                    selection : "prefecture",
-                    borderLineWidth: 0.25,
-                    drawsBoxLine : false,
-                    showsAreaName : false,
-                    font : "MS Mincho",
-                    fontSize : 12,
-                    fontColor : "areaColor",
-                    fontShadowColor : "black",
-                });
+                refreshReveal();
             }
             clearTimeout(timeoutID);
-            timeoutID = setTimeout(rq, 1000);
+            timeoutID = setTimeout(rq, 500);
+            revealHeight = entry.contentRect.height;
+            revealWidth = entry.contentRect.width;
         }
     });
     resizeObserver.observe(target);
+
+    $(function(){
+        $("#chkShowNumber").button();
+        $("#chkShowAddress").button();
+        
+        $("#chkShowNumber").change(function(){
+            refreshReveal();
+        });
+    });
+
+    function refreshReveal(){
+
+        var isShowsAreaName = true;
+        if ($("#chkShowNumber").prop('checked') === false) {
+            isShowsAreaName = false;
+        }
+
+        $("#map-container").empty();
+        $("#map-container").japanMap({
+            width: revealWidth,
+            height: revealHeight,
+            areas  : getAreaData(),
+            selection : "prefecture",
+            borderLineWidth: 0.25,
+            drawsBoxLine : false,
+            showsAreaName : isShowsAreaName,
+            font : "MS Mincho",
+            fontSize : 12,
+            fontColor : "areaColor",
+            fontShadowColor : "black",
+        });
+    }
+
 </script>
+
 </body>
 </html>
