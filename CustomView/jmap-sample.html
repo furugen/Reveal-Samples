@@ -250,6 +250,8 @@
          });
 
          function refreshReveal(){
+            var filter = window.revealView.dashboard;
+
             var isShowsAreaName = false;
             if ($("#chkShowNumber").prop('checked')) {
                isShowsAreaName = true;
@@ -273,6 +275,17 @@
                fontSize : 12,
                fontColor : "areaColor",
                fontShadowColor : "black",
+               onSelect : function(data){
+                alert(data.name);
+                var revealViewLocal = window.revealView;
+                var dashboardLocal = window.revealView.dashboard;
+                var filtervals = [];
+                filtervals.push(data.name);
+                dashboardLocal.setFilterSelectedValues(
+                  dashboardLocal.getFilterByTitle("都道府県"),
+                  filtervals
+                );
+               }
             });
          }
    </script>
