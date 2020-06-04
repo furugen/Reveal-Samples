@@ -250,7 +250,6 @@
          });
 
          function refreshReveal(){
-            var filter = window.revealView.dashboard;
 
             var isShowsAreaName = false;
             if ($("#chkShowNumber").prop('checked')) {
@@ -278,7 +277,7 @@
                onSelect : function(data){
                 alert(data.name);
                 var revealViewLocal = window.revealView;
-                var dashboardLocal = window.revealView.dashboard;
+                var dashboardLocal = revealViewLocal.dashboard;
                 var filtervals = [];
                 filtervals.push(data.name);
                 dashboardLocal.setFilterSelectedValues(
