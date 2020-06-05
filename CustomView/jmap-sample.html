@@ -276,6 +276,18 @@
                fontShadowColor : "black",
                onSelect : function(data){
                 alert(data.name);
+                var revealViewLocal = window.revealView;
+                if(revealViewLocal !== null && revealViewLocal !== undefined)
+                {
+                  var dashboardLocal = revealViewLocal.dashboard;
+                  var filtervals = [];
+                  filtervals.push(data.name);
+                  dashboardLocal.setFilterSelectedValues(
+                     dashboardLocal.getFilterByTitle("都道府県"),
+                     filtervals
+                  );
+                }
+
                }
             });
          }
